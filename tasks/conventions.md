@@ -44,6 +44,8 @@
 - **Seed opcional** commiteado en `lib/<area>/data/*.seed.json` solo como arranque en frío (marcado como tal), NUNCA como verdad permanente.
 - **Anti-alucinación:** inspeccionar la respuesta/HTML real de la fuente ANTES de fijar el schema Zod o los selectores. No inventar campos/URLs.
 - Esto reemplaza el diseño "JSON estático commiteado" del doc 09 §10 para civics/vacunas/DMV/REAL-ID: ahora son feeds dinámicos.
+- **Gemini para listas sin API:** vacunas/REAL-ID/civics se obtienen con **Gemini grounded** (búsqueda web). Modelo `gemini-2.5-flash` (funciona en free tier CON grounding); `gemini-2.5-pro` requiere billing (se reserva para mociones AAF, Fase 2). Cliente vía **REST** (`lib/gemini/client.ts`), no el SDK `@google/generative-ai` (EOL).
+- **Cache-first para fuentes con costo (Gemini):** el endpoint SIRVE del cache; solo el cron (y el arranque en frío) llaman a Gemini. Distinto del molde "live-first" de las APIs gratuitas (Federal Register, Travel Advisories).
 
 ## Idioma
 - Producto bilingüe ES/EN (preferencia ES). Código/identificadores en inglés; copy de usuario localizado.

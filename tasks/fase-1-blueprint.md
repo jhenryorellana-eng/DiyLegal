@@ -55,9 +55,10 @@
 - [x] 2. Selective Service ✅ (lib/tools/selective-service.ts; 14 tests; lógica pura)
 - [x] 3. Federal Register ✅ (lib/feeds/federal-register.ts + cache.ts + endpoint + cron + vercel.json; 11 tests; API JSON en vivo + fallback cache)
 - [x] 4. Travel Advisories ✅ (lib/feeds/travel-advisories.ts + endpoint + cron; 13 tests; API JSON + UA navegador + parse Title→nivel; off por defecto)
-- [ ] 5. Vacunas I-693 (scraping USCIS/CDC)  ← SIGUIENTE
-- [ ] 6. REAL ID (scraping DHS) · 7. Civics (scraping USCIS) · 8. DMV (enlaces por estado)
+- [x] 5. Vacunas I-693 ✅ (lib/feeds/vaccines.ts + infra lib/gemini/client.ts + endpoint + cron; 17 tests; **Gemini grounded** cache-first; validado real: 15 vacunas, covidRequired=false)
+- [ ] 6. REAL ID (Gemini grounded)  ← SIGUIENTE
+- [ ] 7. Civics (Gemini grounded) · 8. DMV (Gemini grounded / enlaces por estado)
 - [ ] 9. Fee Schedule G-1055 (PDF) · 10. Processing Times (mirror node:sqlite)
 - [ ] 11. Legal Aid · 12-14. Court Intelligence · 15. Panel /dev/feeds-test
 
-**Infra creada:** `lib/feeds/cache.ts` (saveCache/loadCache en /data; molde fetch-en-vivo+fallback). Reutilizable por todos los feeds dinámicos.
+**Infra creada:** `lib/feeds/cache.ts` (saveCache/loadCache en /data; molde fetch-en-vivo+fallback) · `lib/gemini/client.ts` (geminiGenerate/geminiJson/extractJson vía REST; grounding con gemini-2.5-flash). GEMINI_API_KEY en `.env.local` (rotar — fue pegada en chat).
