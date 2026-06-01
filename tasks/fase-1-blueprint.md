@@ -59,8 +59,11 @@
 - [x] 6. REAL ID ✅ (lib/feeds/real-id.ts + endpoint ?state= + cron; 7 tests; Gemini grounded; validado real: enforcedSince 2025-05-07, 51 estados, CA/NY true, TX/FL false)
 - [x] 7. Civics ✅ (lib/feeds/civics.ts + endpoint + cron; reemplaza stub Fase 0; 11 tests; Gemini grounded por pool; selección 2008/2025 por filingDate; validado real: 100 preguntas STOP)
 - [x] 8. DMV ✅ (lib/feeds/dmv.ts + endpoint ?state= + cron; 7 tests; Gemini grounded; 12 estados, homepage + manual EN/ES)
-- [ ] 9. Fee Schedule G-1055 (PDF, instalar pdf-parse, feeLines literales)  ← SIGUIENTE
-- [ ] 10. Processing Times (mirror node:sqlite + GitHub release)
+- [x] 9. Fee Schedule G-1055 ✅ (lib/feeds/pdf.ts + fee-schedule.ts + endpoint ?form= + cron; 9 tests; pdf-parse v2; feeLines LITERALES sin simplificar; URL verificada; test de contrato anti-alteración de dígitos. Mejora futura: getTable() para bloque exacto por formulario)
+- [ ] 10. Processing Times (mirror node:sqlite + GitHub release jzebedee/uscis)  ← SIGUIENTE
 - [ ] 11. Legal Aid (cheerio) · 12-14. Court Intelligence (eoirFetch+cheerio) · 15. Panel /dev/feeds-test
+
+**Infra creada (acumulada):** `cache.ts`, `gemini/client.ts` (REST+grounding), `pdf.ts` (pdf-parse v2). 9 crons en vercel.json.
+**Notas técnicas Fee Schedule:** pdf-parse v2 API = `new PDFParse({data}).getText().text`; G-1055 = 57 páginas, texto con celdas aplanadas " | "; `getTable()`/`getPageTables()` disponibles para extracción estructurada futura.
 
 **Infra creada:** `lib/feeds/cache.ts` (saveCache/loadCache en /data; molde fetch-en-vivo+fallback) · `lib/gemini/client.ts` (geminiGenerate/geminiJson/extractJson vía REST; grounding con gemini-2.5-flash). GEMINI_API_KEY en `.env.local` (rotar — fue pegada en chat).
