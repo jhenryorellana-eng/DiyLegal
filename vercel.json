@@ -4,6 +4,7 @@
     { "path": "/api/cron/federal-register-sync", "schedule": "0 5 * * *" },
     { "path": "/api/cron/travel-advisories-sync", "schedule": "0 9 * * 1" },
     { "path": "/api/cron/vaccines-sync", "schedule": "0 6 1 * *" },
-    { "path": "/api/cron/real-id-sync", "schedule": "30 6 1 * *" }
+    { "path": "/api/cron/real-id-sync", "schedule": "30 6 1 * *" },
+    { "path": "/api/cron/civics-sync", "schedule": "0 7 1 * *" }
   ]
 }

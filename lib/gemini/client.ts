@@ -28,6 +28,8 @@ export interface GeminiOptions {
   temperature?: number;
   /** Pide responseMimeType JSON (incompatible con grounded; se ignora si grounded). */
   json?: boolean;
+  /** Límite de tokens de salida (subir para respuestas grandes, p. ej. civics). */
+  maxOutputTokens?: number;
 }
 
 /** Genera texto con Gemini. Lanza si falta la key o si HTTP no-ok. */
@@ -36,6 +38,9 @@ export async function geminiGenerate(prompt: string, options: GeminiOptions = {}
   const generationConfig: Record<string, unknown> = { temperature: options.temperature ?? 0.2 };
   if (options.json && !options.grounded) {
     generationConfig.responseMimeType = "application/json";
+  }
+  if (options.maxOutputTokens) {
+    generationConfig.maxOutputTokens = options.maxOutputTokens;
   }
   const body: Record<string, unknown> = {
     contents: [{ parts: [{ text: prompt }] }],

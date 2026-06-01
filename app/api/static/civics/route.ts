@@ -1,15 +1,13 @@
 import { z } from "zod";
+import { loadCache, saveCache } from "@/lib/feeds/cache";
+import { type CivicsData, civicsCacheName, fetchCivics, selectVersion } from "@/lib/feeds/civics";
 import { feedEnabled } from "@/lib/feeds/config";
 import { jsonErr, jsonFrom, jsonOk } from "@/lib/http/response";
 import { parseWith, searchParamsToObject } from "@/lib/validation/zod-helpers";
 
 /**
- * GET /api/static/civics — examen de ciudadanía (doc 07 §4.5, doc 02 §civics).
- *
- * STUB de la Fase 0: ejercita el patrón transversal completo en miniatura
- *   flag (503) → Zod (400) → {ok,data} (200)
- * antes de replicarlo a las ~15 fuentes. Los pools reales (2008 = 100 q,
- * 2025 = 128 q) y el builder de datos llegan en la Fase 1.
+ * GET /api/static/civics?version=|filingDate= (doc 07 §4.5, doc 09 §10).
+ * Selecciona el pool (2008/2025) y lo sirve cache-first (Gemini cuesta).
  */
 export const runtime = "nodejs";
 
@@ -21,23 +19,32 @@ const QuerySchema = z.object({
     .optional(),
 });
 
-const CIVICS_STUB = {
-  version: "2025",
-  totalQuestions: 128,
-  questions: [] as { id: number; question: string; answers: string[] }[],
-  note: "stub-fase-0",
-} as const;
-
 export async function GET(request: Request): Promise<Response> {
   if (!feedEnabled("civics")) {
-    return jsonErr("ConfigMissing", "La función civics no está habilitada todavía");
+    return jsonErr("ConfigMissing", "El examen de civismo no está habilitado");
   }
 
   const { searchParams } = new URL(request.url);
   const parsed = parseWith(QuerySchema, searchParamsToObject(searchParams));
-  if (!parsed.success) {
-    return jsonFrom(parsed.error);
+  if (!parsed.success) return jsonFrom(parsed.error);
+
+  const version = selectVersion(parsed.data);
+  const cacheName = civicsCacheName(version);
+
+  const cached = await loadCache<CivicsData>(cacheName);
+  if (cached) {
+    return jsonOk({
+      ...cached.data,
+      count: cached.data.questions.length,
+      cachedAt: cached.fetchedAt,
+    });
   }
 
-  return jsonOk(CIVICS_STUB);
+  try {
+    const data = await fetchCivics(version);
+    await saveCache(cacheName, data);
+    return jsonOk({ ...data, count: data.questions.length });
+  } catch {
+    return jsonErr("BackendUnavailable", "No se pudo obtener el examen de civismo");
+  }
 }
