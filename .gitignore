@@ -1,0 +1,43 @@
+# dependencias
+/node_modules
+.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+/build
+/dist
+
+# producción / despliegue
+/coverage
+
+# entorno (claves server-side — doc 00 §convenciones, doc 10)
+.env
+.env.local
+.env.*.local
+
+# caches de datos generados en runtime (doc 06 §4: /data/*.json son caches)
+/data/*.json
+!/data/.gitkeep
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# typescript / tooling
+*.tsbuildinfo
+next-env.d.ts
+
+# OS / editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# móvil (Capacitor, Fase 10)
+/ios/App/Pods
+/android/.gradle

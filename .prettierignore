@@ -1,0 +1,9 @@
+.next
+node_modules
+coverage
+dist
+build
+package-lock.json
+data
+docs
+tasks
