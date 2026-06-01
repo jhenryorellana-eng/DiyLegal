@@ -37,5 +37,13 @@
 ## Estilo de código (CLAUDE.md global)
 - Funciones ≤ 50 líneas. Archivos ≤ 300 líneas. Sin dead code, sin TODOs huérfanos, sin `console.log` permanente (usar logger). Sin magic strings/numbers (constantes/enums). Catch vacío prohibido. Si repite 3+ veces → abstraer.
 
+## Datos: dinámicos desde la fuente oficial (decisión del usuario 2026-05-31)
+- **Nada de datos hardcodeados que envejecen.** Cada fuente obtiene datos **actualizados de su fuente oficial**: API donde exista, scraping donde no.
+- Patrón: `obtención (API/scraping) → Zod → cache JSON (/data, git-ignored) → cron de refresco → endpoint con fallback al último cache`.
+- **Fallback obligatorio:** si la fuente oficial está caída/cambió, el endpoint sirve el último cache válido (no rompe). Si no hay cache → `502 BackendUnavailable`.
+- **Seed opcional** commiteado en `lib/<area>/data/*.seed.json` solo como arranque en frío (marcado como tal), NUNCA como verdad permanente.
+- **Anti-alucinación:** inspeccionar la respuesta/HTML real de la fuente ANTES de fijar el schema Zod o los selectores. No inventar campos/URLs.
+- Esto reemplaza el diseño "JSON estático commiteado" del doc 09 §10 para civics/vacunas/DMV/REAL-ID: ahora son feeds dinámicos.
+
 ## Idioma
 - Producto bilingüe ES/EN (preferencia ES). Código/identificadores en inglés; copy de usuario localizado.
