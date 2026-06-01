@@ -56,8 +56,9 @@
 - [x] 3. Federal Register ✅ (lib/feeds/federal-register.ts + cache.ts + endpoint + cron + vercel.json; 11 tests; API JSON en vivo + fallback cache)
 - [x] 4. Travel Advisories ✅ (lib/feeds/travel-advisories.ts + endpoint + cron; 13 tests; API JSON + UA navegador + parse Title→nivel; off por defecto)
 - [x] 5. Vacunas I-693 ✅ (lib/feeds/vaccines.ts + infra lib/gemini/client.ts + endpoint + cron; 17 tests; **Gemini grounded** cache-first; validado real: 15 vacunas, covidRequired=false)
-- [ ] 6. REAL ID (Gemini grounded)  ← SIGUIENTE
-- [ ] 7. Civics (Gemini grounded) · 8. DMV (Gemini grounded / enlaces por estado)
+- [x] 6. REAL ID ✅ (lib/feeds/real-id.ts + endpoint ?state= + cron; 7 tests; Gemini grounded; validado real: enforcedSince 2025-05-07, 51 estados, CA/NY true, TX/FL false)
+- [ ] 7. Civics (Gemini grounded)  ← SIGUIENTE
+- [ ] 8. DMV (Gemini grounded / enlaces por estado)
 - [ ] 9. Fee Schedule G-1055 (PDF) · 10. Processing Times (mirror node:sqlite)
 - [ ] 11. Legal Aid · 12-14. Court Intelligence · 15. Panel /dev/feeds-test
 
