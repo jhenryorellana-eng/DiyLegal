@@ -33,7 +33,7 @@
 
 1. ✅ **Estructura:** single-app Next en raíz `E:\Dyi Legal`, PRDs → `/docs`. Separable a monorepo después.
 2. ✅ **Worker EOIR/NVC:** stub/mock con fixtures primero (cero costo). Worker real en iteración posterior.
-3. ✅ **Supabase (Fase 3):** migraciones SQL versionadas + Supabase local; conectar proyecto real cuando el usuario provea org/credenciales.
+3. ✅ **Supabase (Fase 3):** proyecto REAL disponible → "Gyi Legal", ref `jxmrhxlzjlxforvhxuuv` (`https://jxmrhxlzjlxforvhxuuv.supabase.co`, sa-east-1, PG17), accesible vía connector claude.ai. Migraciones se versionan en `supabase/migrations/` y se aplican con `apply_migration`. Claves reales (anon/service_role/DB) SOLO en `.env.local`, nunca al repo.
 7. ✅ **Orden:** plan propuesto (ligeras + AAF antes de EOIR).
 
 ### Pendientes (resolver al llegar a su fase)
