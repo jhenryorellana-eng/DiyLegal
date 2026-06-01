@@ -50,7 +50,8 @@
 
 ## Progreso Fase 1
 - [x] 1. ITIN ✅ (lib/tools/itin-check.ts + route + test; 11 tests; sin red, sin packages)
-- [ ] 2. Selective Service  ← SIGUIENTE
-- [ ] 3. Vacunas · 4. DMV · 5. REAL ID · 6. Civics
+- [x] 2. Selective Service ✅ (lib/tools/selective-service.ts + route + test; 14 tests; 4 estados, no SSN)
+- [ ] 3. Vacunas  ← SIGUIENTE
+- [ ] 4. DMV · 5. REAL ID · 6. Civics
 - [ ] 7. Federal Register · 8. Travel Advisories · 9. Fee Schedule · 10. Processing Times
 - [ ] 11. Legal Aid · 12-14. Court Intelligence · 15. Panel
