@@ -13,6 +13,8 @@ export const AAF_FLAGS = {
   courtIntelligenceCron: "AAF_ENABLE_COURT_INTELLIGENCE_CRON",
   gemini: "AAF_ENABLE_GEMINI",
   motion: "AAF_ENABLE_MOTION",
+  regulatoryCheck: "AAF_ENABLE_REGULATORY_CHECK",
+  icpmGrounding: "AAF_ENABLE_ICPM_GROUNDING",
 } as const;
 
 export type AafFlagKey = keyof typeof AAF_FLAGS;

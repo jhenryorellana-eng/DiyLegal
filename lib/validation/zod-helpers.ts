@@ -19,6 +19,23 @@ export function parseWith<T>(schema: z.ZodType<T>, input: unknown): ParseResult<
   return { success: false, error: err("ValidationError", message) };
 }
 
+/**
+ * Lee el cuerpo JSON de la petición y lo valida con `schema`. Un body ausente o
+ * mal formado se traduce a `ValidationError` (400), igual que un fallo de schema.
+ */
+export async function parseBody<T>(
+  schema: z.ZodType<T>,
+  request: Request,
+): Promise<ParseResult<T>> {
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return { success: false, error: err("ValidationError", "Cuerpo JSON inválido o ausente") };
+  }
+  return parseWith(schema, body);
+}
+
 /** Convierte `URLSearchParams` en un objeto plano para validar con Zod. */
 export function searchParamsToObject(searchParams: URLSearchParams): Record<string, string> {
   const obj: Record<string, string> = {};
