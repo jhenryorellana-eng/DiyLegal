@@ -10,3 +10,6 @@ tasks
 
 # Fixtures de test: HTML/JSON crudo de fuentes reales — preservar verbatim
 **/__fixtures__
+
+# Migraciones SQL (Prettier no tiene parser SQL)
+supabase/migrations
