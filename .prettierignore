@@ -7,3 +7,6 @@ package-lock.json
 data
 docs
 tasks
+
+# Fixtures de test: HTML/JSON crudo de fuentes reales — preservar verbatim
+**/__fixtures__
