@@ -1,5 +1,4 @@
-import { calculateAAF } from "@/lib/aaf/calculator";
-import { loadRegulatory } from "@/lib/aaf/regulatory";
+import { computeAaf } from "@/lib/aaf/compute";
 import { AafCalculateBodySchema } from "@/lib/aaf/request-schema";
 import { jsonErr, jsonFrom, jsonOk } from "@/lib/http/response";
 import { parseBody } from "@/lib/validation/zod-helpers";
@@ -16,8 +15,7 @@ export async function POST(request: Request): Promise<Response> {
   if (!parsed.success) return jsonFrom(parsed.error);
 
   try {
-    const { snapshot, fromCache, fetchedAt } = await loadRegulatory();
-    const result = calculateAAF({ ...parsed.data, snapshot });
+    const { result, fromCache, fetchedAt } = await computeAaf(parsed.data);
     return jsonOk({ ...result, regulatory: { fromCache, fetchedAt } });
   } catch (error) {
     return jsonErr("Unknown", error instanceof Error ? error.message : "Cálculo AAF falló");
