@@ -8,6 +8,9 @@
     { "path": "/api/cron/civics-sync", "schedule": "0 7 1 * *" },
     { "path": "/api/cron/dmv-sync", "schedule": "30 7 1 * *" },
     { "path": "/api/cron/fee-schedule-sync", "schedule": "0 12 1 * *" },
-    { "path": "/api/cron/processing-times-sync", "schedule": "0 14 * * *" }
+    { "path": "/api/cron/processing-times-sync", "schedule": "0 14 * * *" },
+    { "path": "/api/cron/eoir-status-sync", "schedule": "0 */6 * * *" },
+    { "path": "/api/cron/eoir-court-details-sync", "schedule": "30 7 * * *" },
+    { "path": "/api/cron/trac-judge-stats-sync", "schedule": "0 8 * * 1" }
   ]
 }

@@ -8,6 +8,9 @@ import { flag } from "@/lib/feeds/config";
 export const AAF_FLAGS = {
   uscis: "AAF_ENABLE_USCIS",
   courtIntelligence: "AAF_ENABLE_COURT_INTELLIGENCE",
+  judgeStats: "AAF_ENABLE_JUDGE_STATS",
+  courtChangeAlerts: "AAF_ENABLE_COURT_CHANGE_ALERTS",
+  courtIntelligenceCron: "AAF_ENABLE_COURT_INTELLIGENCE_CRON",
   gemini: "AAF_ENABLE_GEMINI",
   motion: "AAF_ENABLE_MOTION",
 } as const;

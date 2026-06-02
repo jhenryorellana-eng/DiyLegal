@@ -11,6 +11,7 @@ function res(status: number, body = "", headers: Record<string, string> = {}) {
     ok: status >= 200 && status < 300,
     headers: new Headers(headers),
     text: async () => body,
+    arrayBuffer: async () => new TextEncoder().encode(body).buffer,
   } as unknown as Response;
 }
 

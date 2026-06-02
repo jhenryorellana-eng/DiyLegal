@@ -69,6 +69,8 @@ export interface EoirFetchOptions {
   minIntervalMs?: number;
   /** Override de la base del backoff (ms). Útil en tests. */
   backoffBaseMs?: number;
+  /** Charset del body. `latin1` para fuentes ISO-8859-1 (p. ej. TRAC). Default utf-8. */
+  decodeAs?: "utf-8" | "latin1";
 }
 
 /**
@@ -102,7 +104,8 @@ export async function eoirFetch(url: string, opts: EoirFetchOptions = {}): Promi
     }
     if (!res.ok) throw new Error(`${url} respondió HTTP ${res.status}`);
 
-    const body = await res.text();
+    const buffer = Buffer.from(await res.arrayBuffer());
+    const body = buffer.toString(opts.decodeAs === "latin1" ? "latin1" : "utf8");
     if (isChallenge(res, body)) throw new EoirCaptchaDetectedError(url);
     return body;
   }
