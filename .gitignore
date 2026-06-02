@@ -38,6 +38,12 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 
+# artefactos de Playwright (snapshots/console de verificación E2E)
+/.playwright-mcp/
+
+# notas de trabajo locales (no son parte del repo)
+/Nota*.txt
+
 # móvil (Capacitor, Fase 10)
 /ios/App/Pods
 /android/.gradle

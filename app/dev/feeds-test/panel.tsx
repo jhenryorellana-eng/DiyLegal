@@ -10,6 +10,10 @@ interface Probe {
   key: string;
   label: string;
   path: string;
+  /** Método HTTP; por defecto GET. */
+  method?: "GET" | "POST";
+  /** Cuerpo JSON para sondas POST. */
+  body?: unknown;
 }
 
 const PROBES: Probe[] = [
@@ -40,6 +44,33 @@ const PROBES: Probe[] = [
   { key: "court", label: "EOIR court detail", path: "/api/eoir/courts/adelanto-immigration-court" },
   { key: "judges", label: "TRAC judges", path: "/api/eoir/judges?baseCityCode=ADL" },
   { key: "intel", label: "Case intelligence", path: "/api/eoir/intelligence/case?judgeName=Riley" },
+  {
+    key: "aaf-calc",
+    label: "AAF calculate",
+    method: "POST",
+    path: "/api/aaf/calculate",
+    body: { filingDate: "2025-03-10", venue: "USCIS_affirmative", asOf: "2026-04-01" },
+  },
+  { key: "aaf-reg", label: "AAF regulatory", path: "/api/aaf/regulatory/current" },
+  {
+    key: "aaf-receipt",
+    label: "AAF receipt (PDF)",
+    method: "POST",
+    path: "/api/aaf/generate-receipt",
+    body: { filingDate: "2025-03-10", venue: "USCIS_affirmative", applicantName: "Demo" },
+  },
+  {
+    key: "aaf-motion",
+    label: "AAF motion (PDF)",
+    method: "POST",
+    path: "/api/aaf/generate-motion",
+    body: {
+      filingDate: "2025-03-10",
+      venue: "USCIS_affirmative",
+      applicantName: "Demo",
+      proSe: true,
+    },
+  },
 ];
 
 type ProbeState = "idle" | "loading" | ProbeResult;
@@ -68,14 +99,27 @@ export function FeedsTestPanel() {
     setResults((r) => ({ ...r, [probe.key]: "loading" }));
     const started = performance.now();
     try {
-      const res = await fetch(probe.path);
+      const init: RequestInit =
+        probe.method === "POST"
+          ? {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify(probe.body ?? {}),
+            }
+          : {};
+      const res = await fetch(probe.path, init);
       const ms = Math.round(performance.now() - started);
       let summary: string;
-      try {
-        const body = await res.json();
-        summary = body.ok ? summarize(body.data) : `error: ${body.error?.kind ?? "?"}`;
-      } catch {
-        summary = "(respuesta no-JSON)";
+      if ((res.headers.get("content-type") ?? "").includes("application/pdf")) {
+        const branch = res.headers.get("x-aaf-branch") ?? res.headers.get("x-aaf-from-fallback");
+        summary = `PDF${branch ? ` (${branch})` : ""}`;
+      } else {
+        try {
+          const body = await res.json();
+          summary = body.ok ? summarize(body.data) : `error: ${body.error?.kind ?? "?"}`;
+        } catch {
+          summary = "(respuesta no-JSON)";
+        }
       }
       setResults((r) => ({ ...r, [probe.key]: { status: res.status, ok: res.ok, ms, summary } }));
     } catch (error) {
